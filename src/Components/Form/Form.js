@@ -1,9 +1,9 @@
-import React, { useRef } from 'react'
+import React, { useState } from 'react'
 import Input from '../Input/Input';
+import ProductPage from '../Product-Page/ProductPage';
 import "./Form.css"
 
 export default function Form() {
-    
     let productID = [];
     let viewID = [];
 
@@ -14,28 +14,47 @@ export default function Form() {
 	for (let j = 1; j <= 10; j++) {
 		viewID.push(j);
 	}
-	const product = useRef(null);
-	const viewer = useRef(null);
 	
-	function handleSubmit(e) {
-		e.preventDefault();
-		console.log(product.value);
-		console.log(viewer.value);		
+	const [ selectProduct, setSelectProduct ] = useState('');
+	const [ selectView, setSelectView ] = useState('');
+	const [ state, setState] = useState({
+
+		isSubmitted: false
+	})
+
+	function handleChange(e) {
+		let selectProd = e.target.value;
+		setSelectProduct(selectProd);
 	}
+	function handleChangeView(e) {
+		let selectVal = e.target.value;
+		setSelectView(selectVal);
+	}
+
+	function handleSubmit(e) {
+		e.preventDefault()
+		setState({isSubmitted: true})
+	}
+
+	
     
     return (
 		<div>
 			<h1 className="heading">Product Review Page</h1>
 			<h4 className="subHeading"> Check your Product's Review</h4>
 			{/* Product ID */}
-			<form className="product">
+			<form onSubmit={handleSubmit}>
 				<div className="form">
 					<div className="prod">
 						<label className="name">
 							Choose the Product ID{" "}
 							<span className="num">[between 1- 20]</span>:{" "}
 						</label>
-						<select ref={product}>
+						<select
+							name="prod"
+							onChange={handleChange}
+							value={selectProduct}
+						>
 							{productID.map((num) => {
 								return (
 									<Input
@@ -54,7 +73,11 @@ export default function Form() {
 							Choose the Viewer ID{" "}
 							<span className="num">[between 1- 10]</span>:{" "}
 						</label>
-						<select ref={viewer}>
+						<select
+							name="viewer"
+							onChange={handleChangeView}
+							value={selectView}
+						>
 							{viewID.map((num) => {
 								return (
 									<Input
@@ -67,8 +90,10 @@ export default function Form() {
 						</select>
 					</div>
 				</div>
-				<button type="submit" onClick={handleSubmit}>Submit</button>
+				<input className="button" type="submit" value="submit" />
 			</form>
+
+			{ state.isSubmitted && <ProductPage product={selectProduct} viewer={selectView} /> }
 		</div>
 	);
 }

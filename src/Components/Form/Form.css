@@ -31,7 +31,7 @@
   font-weight: normal;
 }
 
-button {
+.button {
   width: 20%;
   background-color:  rgb(59, 168, 168);
   color: #000;
