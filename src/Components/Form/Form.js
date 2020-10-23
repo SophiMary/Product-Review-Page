@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import Input from '../Input/Input';
 import "./Form.css"
 
@@ -13,7 +13,15 @@ export default function Form() {
 
 	for (let j = 1; j <= 10; j++) {
 		viewID.push(j);
-    }
+	}
+	const product = useRef(null);
+	const viewer = useRef(null);
+	
+	function handleSubmit(e) {
+		e.preventDefault();
+		console.log(product.value);
+		console.log(viewer.value);		
+	}
     
     return (
 		<div>
@@ -27,9 +35,15 @@ export default function Form() {
 							Choose the Product ID{" "}
 							<span className="num">[between 1- 20]</span>:{" "}
 						</label>
-						<select name="product">
+						<select ref={product}>
 							{productID.map((num) => {
-								return <Input key={num} val={num} />;
+								return (
+									<Input
+										key={num}
+										name="productID"
+										val={num}
+									/>
+								);
 							})}
 						</select>
 					</div>
@@ -40,14 +54,20 @@ export default function Form() {
 							Choose the Viewer ID{" "}
 							<span className="num">[between 1- 10]</span>:{" "}
 						</label>
-						<select name="product">
+						<select ref={viewer}>
 							{viewID.map((num) => {
-								return <Input key={num} val={num} />;
+								return (
+									<Input
+										key={num}
+										name="viewerID"
+										val={num}
+									/>
+								);
 							})}
 						</select>
 					</div>
 				</div>
-				<button type="submit">Submit</button>
+				<button type="submit" onClick={handleSubmit}>Submit</button>
 			</form>
 		</div>
 	);
